@@ -10,7 +10,7 @@ import {
   OutBoundMessageCard,
 } from "./components/Messaging";
 
- const messages = [
+const dummyMessages = [
   {
     type: "in",
     username: "Eleanor Pena",
@@ -41,6 +41,23 @@ function App() {
   const [message, setMessage] = useState(
     "Hello Elsa 👋. My name is Jason. What can I do for you today?"
   );
+  const [messages, setMessages] = useState(dummyMessages);
+
+  const useMacro = (macro: string) => {
+    setMessage(macro);
+  };
+
+  const sendMessage = () => {
+    setMessages([
+      ...messages,
+      {
+        type: "out",
+        username: "Jason — Cartloop",
+        messages: [message],
+      },
+    ]);
+    setMessage("");
+  };
 
   return (
     <div className="min-h-screen p-4 bg-white flex">
@@ -79,7 +96,7 @@ function App() {
 
         <div className="p-2 mb-8 bg-gray-100 rounded-xl">
           <div className="xl:hidden">
-            <MacrosRow />
+            <MacrosRow macroClick={useMacro} />
           </div>
 
           <div className="px-6 py-4 bg-white rounded-lg shadow-md">
@@ -110,7 +127,10 @@ function App() {
                 </div>
               </div>
               <div className="w-1/2 text-right">
-                <button className="px-3 py-1 text-white bg-primary rounded-md">
+                <button
+                  onClick={() => sendMessage()}
+                  className="px-3 py-1 text-white bg-primary rounded-md"
+                >
                   Resolve
                 </button>
               </div>
@@ -120,7 +140,7 @@ function App() {
       </main>
 
       <div className="hidden xl:flex w-1/4">
-        <MacrosCol />
+        <MacrosCol macroClick={useMacro} />
       </div>
     </div>
   );

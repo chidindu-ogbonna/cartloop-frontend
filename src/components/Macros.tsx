@@ -7,17 +7,22 @@ const macros = [
   "Apple opens another megastore in China amid William Barr criticism",
 ];
 
-type MacrosType = {};
+type MacrosType = {
+  macroClick: (macro: string) => void;
+};
 
 type MacroCardType = {
   text: string;
 };
 
-export const MacrosRow: React.FC<MacrosType> = () => {
+export const MacrosRow: React.FC<MacrosType> = ({ macroClick }) => {
   const [macrosOpen, setMacrosOpen] = useState(true);
 
   const MacrosCard: React.FC<MacroCardType> = ({ text }) => (
-    <div className="min-w-3/4 p-4 bg-gray-100 rounded-lg mr-4 border-4 border-transparent border-solid hover:border-primary cursor-pointer">
+    <div
+      onClick={(e) => macroClick(e.target.textContent)}
+      className="min-w-3/4 md:min-w-1/2 p-4 bg-gray-100 rounded-lg mr-4 border-4 border-transparent border-solid hover:border-primary cursor-pointer"
+    >
       {text}
     </div>
   );
@@ -35,7 +40,6 @@ export const MacrosRow: React.FC<MacrosType> = () => {
         </button>
       </div>
 
-      {/* <div className="flex flex-no-wrap justify-between overflow-x-scroll md:flex-wrap md:overflow-x-hidden"> */}
       {macrosOpen ? (
         <div className="flex pt-1 pb-4 flex-no-wrap justify-between overflow-x-scroll">
           {macros.map((text, index) => (
@@ -47,11 +51,14 @@ export const MacrosRow: React.FC<MacrosType> = () => {
   );
 };
 
-export const MacrosCol: React.FC<MacrosType> = () => {
+export const MacrosCol: React.FC<MacrosType> = ({ macroClick }) => {
   const [macrosOpen, setMacrosOpen] = useState(true);
 
   const MacrosCard: React.FC<MacroCardType> = ({ text }) => (
-    <div className="p-4 bg-white rounded-lg mb-2 shadow-md border-4 border-transparent border-solid hover:border-primary cursor-pointer">
+    <div
+      onClick={(e) => macroClick(e.target.textContent)}
+      className="p-4 bg-white rounded-lg mb-2 shadow-md border-4 border-transparent border-solid hover:border-primary cursor-pointer"
+    >
       {text}
     </div>
   );
