@@ -167,9 +167,12 @@ function App() {
 
             <div className="flex justify-between pt-6 pb-2">
               <div className="flex justify-between w-1/2">
-                <div className="bg-primary rounded-full w-8 h-8 flex justify-center items-center">
+                <button
+                  onClick={() => sendMessage()}
+                  className="bg-primary rounded-full w-8 h-8 flex justify-center items-center cursor-pointer"
+                >
                   <PlusIcon className="h-5 w-5 text-white" />
-                </div>
+                </button>
                 <div className="flex w-1/2 items-center justify-between">
                   <div>
                     <PinSVG className="w-7 h-7" />
