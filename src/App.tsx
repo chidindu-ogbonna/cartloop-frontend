@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import "./css/App.css";
 import SmileySVG from "./components/svg/smiley";
 import MenuSVG from "./components/svg/menu";
@@ -11,68 +11,43 @@ import {
   OutBoundMessageCard,
 } from "./components/Messaging";
 import { sendMessageToApi } from "./api";
-
-const notifySuccess = (message: string) =>
-  toast(message, {
-    style: {
-      background: "#10B981",
-      color: "white",
-    },
-  });
-
-const notifyError = (message: string) =>
-  toast.error(message, {
-    style: {
-      background: "#EF4444",
-      color: "white",
-    },
-  });
-
-const notifySentMessage = (message: string) =>
-  toast(message, {
-    style: {
-      background: "#E75818",
-      color: "white",
-    },
-  });
-const notifyRecievedMessage = (message: string) =>
-  toast(message, {
-    style: {
-      background: "#161616",
-      color: "white",
-    },
-  });
+import {
+  notifyError,
+  notifyRecievedMessage,
+  notifySentMessage,
+  notifySuccess,
+} from "./notifications";
 
 const socket = new WebSocket(
   `${process.env.REACT_APP_WS_ENDPOINT}ws/conversations/10/`
 );
 
-const dummyMessages = [
-  {
-    type: "in",
-    username: "Eleanor Pena",
-    messages: [
-      "Immersive chat startups have a very different vision for the future of voice",
-      "What to Watch on Wednesday: Peacock finally hatches with Brave New World, Psych 2, and more",
-    ],
-  },
-  {
-    type: "out",
-    username: "Guy Hawkins — Cartloop",
-    messages: [
-      "Why Netflix shares are down 10%",
-      // "Ted Sarandos named co-CEO at Netflix",
-    ],
-  },
-  // {
-  //   type: "in",
-  //   username: "Wade Warren",
-  //   messages: [
-  //     "The Calm meditation app is getting its own celebrity-filled HBO Max show",
-  //     "Apple opens another megastore in China amid William Barr criticism",
-  //   ],
-  // },
-];
+// const dummyMessages = [
+//   {
+//     type: "in",
+//     username: "Eleanor Pena",
+//     messages: [
+//       "Immersive chat startups have a very different vision for the future of voice",
+//       "What to Watch on Wednesday: Peacock finally hatches with Brave New World, Psych 2, and more",
+//     ],
+//   },
+//   {
+//     type: "out",
+//     username: "Guy Hawkins — Cartloop",
+//     messages: [
+//       "Why Netflix shares are down 10%",
+//       // "Ted Sarandos named co-CEO at Netflix",
+//     ],
+//   },
+//   // {
+//   //   type: "in",
+//   //   username: "Wade Warren",
+//   //   messages: [
+//   //     "The Calm meditation app is getting its own celebrity-filled HBO Max show",
+//   //     "Apple opens another megastore in China amid William Barr criticism",
+//   //   ],
+//   // },
+// ];
 
 type MessageType = {
   type: "in" | "out";
@@ -83,6 +58,7 @@ type MessageType = {
 function App() {
   const [message, setMessage] = useState("");
   const [uid, setUID] = useState("");
+  const [lastMessage, setLastMessage] = useState<MessageType | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   const useMacro = (macro: string) => {
@@ -94,25 +70,22 @@ function App() {
       const data = JSON.parse(e.data);
       const { message, uid: senderUID } = data;
 
+      const newMessage: MessageType = {
+        type: "in",
+        username: `User ${senderUID}`,
+        messages: [message],
+      };
+
       if (uid === senderUID) {
-        setMessages([
-          ...messages,
-          {
-            type: "out",
-            username: `User ${senderUID}`,
-            messages: [message],
-          },
-        ]);
+        newMessage.type = "out";
+        setMessages([...messages, newMessage]);
       } else {
-        setMessages([
-          ...messages,
-          {
-            type: "in",
-            username: `User ${senderUID}`,
-            messages: [message],
-          },
-        ]);
+        notifyRecievedMessage("New message");
+        newMessage.type = "in";
+        setMessages([...messages, newMessage]);
       }
+
+      setLastMessage(newMessage);
     };
   }
 
@@ -126,7 +99,7 @@ function App() {
 
   const sendMessage = async () => {
     if (message) {
-      notifySentMessage("New Message");
+      notifySentMessage("Message sent");
       socket.send(JSON.stringify({ message, uid }));
       setMessage("");
     }
