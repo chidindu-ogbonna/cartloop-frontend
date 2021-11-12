@@ -62,9 +62,9 @@ function App() {
   return (
     <div className="min-h-screen p-4 bg-white flex">
       <main className="w-full xl:w-3/4 h-screen">
-        <div className="mb-8 bg-gray-100 rounded-xl overflow-y-scroll h-70vh">
+        <div className="mb-8 bg-cl-gray rounded-xl overflow-y-scroll h-70vh">
           <div className="flex items-center justify-between px-6 py-4">
-            <div className="font-bold text-gray-400">In progress</div>
+            <div className="font-semibold text-cl-dark-gray text-sm">In progress</div>
             <div className="flex items-center">
               <MenuSVG className="w-5 h-5" />
             </div>
@@ -94,7 +94,7 @@ function App() {
           </div>
         </div>
 
-        <div className="p-2 mb-8 bg-gray-100 rounded-xl">
+        <div className="p-2 mb-8 bg-cl-gray rounded-xl">
           <div className="xl:hidden">
             <MacrosRow macroClick={useMacro} />
           </div>

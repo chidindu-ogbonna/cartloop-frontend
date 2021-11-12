@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         primary: "#E75818",
         "cl-orange": "#E75818",
+        "cl-dark-gray": "rgba(22, 22, 22, 0.4)",
+        "cl-gray": "rgba(22, 22, 22, 0.04)",
+        "cl-black": "#161616",
       },
       minWidth: {
         0: "0",
