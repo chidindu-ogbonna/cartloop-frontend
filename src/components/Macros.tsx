@@ -20,7 +20,7 @@ export const MacrosRow: React.FC<MacrosType> = ({ macroClick }) => {
 
   const MacrosCard: React.FC<MacroCardType> = ({ text }) => (
     <div
-      onClick={(e) => macroClick(e.target.textContent)}
+      onClick={() => macroClick(text)}
       className="min-w-3/4 md:min-w-1/2 p-4 bg-gray-100 rounded-lg mr-4 border-4 border-transparent border-solid hover:border-primary cursor-pointer"
     >
       {text}
@@ -56,7 +56,7 @@ export const MacrosCol: React.FC<MacrosType> = ({ macroClick }) => {
 
   const MacrosCard: React.FC<MacroCardType> = ({ text }) => (
     <div
-      onClick={(e) => macroClick(e.target.textContent)}
+      onClick={() => macroClick(text)}
       className="p-4 bg-white rounded-lg mb-2 shadow-md border-4 border-transparent border-solid hover:border-primary cursor-pointer"
     >
       {text}
