@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import "./css/App.css";
 import SmileySVG from "./components/svg/smiley";
 import MenuSVG from "./components/svg/menu";
@@ -10,6 +11,41 @@ import {
   OutBoundMessageCard,
 } from "./components/Messaging";
 import { sendMessageToApi } from "./api";
+
+const notifySuccess = (message: string) =>
+  toast(message, {
+    style: {
+      background: "#10B981",
+      color: "white",
+    },
+  });
+
+const notifyError = (message: string) =>
+  toast.error(message, {
+    style: {
+      background: "#EF4444",
+      color: "white",
+    },
+  });
+
+const notifySentMessage = (message: string) =>
+  toast(message, {
+    style: {
+      background: "#E75818",
+      color: "white",
+    },
+  });
+const notifyRecievedMessage = (message: string) =>
+  toast(message, {
+    style: {
+      background: "#161616",
+      color: "white",
+    },
+  });
+
+const socket = new WebSocket(
+  `${process.env.REACT_APP_WS_ENDPOINT}ws/conversations/10/`
+);
 
 const dummyMessages = [
   {
@@ -38,33 +74,68 @@ const dummyMessages = [
   // },
 ];
 
+type MessageType = {
+  type: "in" | "out";
+  username: string;
+  messages: string[];
+};
+
 function App() {
-  const [message, setMessage] = useState(
-    "Hello Elsa My name is Jason. What can I do for you today"
-  );
-  const [messages, setMessages] = useState(dummyMessages);
+  const [message, setMessage] = useState("");
+  const [uid, setUID] = useState("");
+  const [messages, setMessages] = useState<MessageType[]>([]);
 
   const useMacro = (macro: string) => {
     setMessage(macro);
   };
 
-  const sendMessage = async () => {
-    // setMessages([
-    //   ...messages,
-    //   {
-    //     type: "out",
-    //     username: "Jason — Cartloop",
-    //     messages: [message],
-    //   },
-    // ]);
-    if (message) {
-      console.log("Sending message:", message);
-      await sendMessageToApi(message);
-    }
-    setMessage("");
+  if (socket) {
+    socket.onmessage = function (e) {
+      const data = JSON.parse(e.data);
+      const { message, uid: senderUID } = data;
+
+      if (uid === senderUID) {
+        setMessages([
+          ...messages,
+          {
+            type: "out",
+            username: `User ${senderUID}`,
+            messages: [message],
+          },
+        ]);
+      } else {
+        setMessages([
+          ...messages,
+          {
+            type: "in",
+            username: `User ${senderUID}`,
+            messages: [message],
+          },
+        ]);
+      }
+    };
+  }
+
+  socket.onclose = function () {
+    notifyError("Chat socket closed unexpectedly");
   };
 
-  // console.log(process.env.REACT_APP_API_ENDPOINT);
+  socket.onopen = () => {
+    notifySuccess("Connected to Websocket!");
+  };
+
+  const sendMessage = async () => {
+    if (message) {
+      notifySentMessage("New Message");
+      socket.send(JSON.stringify({ message, uid }));
+      setMessage("");
+    }
+  };
+
+  useEffect(() => {
+    // Generate uid to identify user
+    setUID(`id-${Math.random().toString(16).slice(2)}`);
+  }, []);
 
   return (
     <div className="min-h-screen p-4 bg-white flex">
@@ -151,6 +222,7 @@ function App() {
       <div className="hidden xl:flex w-1/4">
         <MacrosCol macroClick={useMacro} />
       </div>
+      <Toaster />
     </div>
   );
 }

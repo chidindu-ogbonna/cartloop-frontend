@@ -65,11 +65,23 @@ export const InBoundMessageCard: React.FC<InBoundMessageType> = ({
         return (
           <Fragment key={index}>
             {index === 0 ? (
-              <MessageBox
-                message={message}
-                className="mb-2 rounded-b-lg rounded-t-xl"
-              />
-            ) : index === messages.length - 1 ? (
+              <div className="flex">
+                <div className="w-5/6 xl:w-11/12">
+                  <MessageBox
+                    message={message}
+                    className="rounded-t-lg rounded-b-xl"
+                  />
+                </div>
+                <div className="flex justify-between w-1/6 px-2 py-1 xl:w-1/12 md:px-3">
+                  <SmileySVG className="w-5 h-5" />
+                  <UserSVG className="w-5 h-5" />
+                </div>
+              </div>
+            ) : // <MessageBox
+            //   message={message}
+            //   className="mb-2 rounded-b-lg rounded-t-xl"
+            // />
+            index === messages.length - 1 ? (
               <div className="flex">
                 <div className="w-5/6 xl:w-11/12">
                   <MessageBox
