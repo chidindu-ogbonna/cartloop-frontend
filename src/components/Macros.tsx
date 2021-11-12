@@ -31,7 +31,7 @@ export const MacrosRow: React.FC<MacrosType> = ({ macroClick }) => {
     <div className="px-3 py-4 mb-4 bg-white rounded-lg shadow-md">
       <div className="flex items-center justify-between mb-4">
         <div className="font-bold">Macros</div>
-        <button type="button" onClick={(e) => setMacrosOpen(!macrosOpen)}>
+        <button type="button" onClick={() => setMacrosOpen(!macrosOpen)}>
           <ChevronDownSVG
             className={`w-5 h-5 transform ${
               macrosOpen ? "rotate-180" : "rotate-0"
@@ -67,7 +67,7 @@ export const MacrosCol: React.FC<MacrosType> = ({ macroClick }) => {
     <div className="px-3 py-4 bg-cl-gray rounded-lg ml-4 w-full">
       <div className="flex items-center justify-between mb-4">
         <div className="font-bold">Macros</div>
-        <button type="button" onClick={(e) => setMacrosOpen(!macrosOpen)}>
+        <button type="button" onClick={() => setMacrosOpen(!macrosOpen)}>
           <ChevronDownSVG
             className={`w-5 h-5 transform ${
               macrosOpen ? "rotate-180" : "rotate-0"
