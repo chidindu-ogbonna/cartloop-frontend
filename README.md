@@ -8,7 +8,7 @@ The Frontend of the cartloop challenge. You can view a demo of the project
 
 You can watch the demo of this project end-to-end
 
-[![Watch the Demo Video](https://res.cloudinary.com/cheapflix/image/upload/v1636719294/Screenshot_2021-11-12_at_13.14.44.png)](https://res.cloudinary.com/cheapflix/video/upload/v1636719189/Screen_Recording_2021-11-12_at_13.09.07.mov)
+[![Watch the Demo Video](https://res.cloudinary.com/cheapflix/image/upload/v1636719294/Screenshot_2021-11-12_at_13.14.44.png)](https://youtu.be/aab5zTVN7vY)
 
 ## Setup
 
