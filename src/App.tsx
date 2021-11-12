@@ -9,6 +9,7 @@ import {
   InBoundMessageCard,
   OutBoundMessageCard,
 } from "./components/Messaging";
+import { sendMessageToApi } from "./api";
 
 const dummyMessages = [
   {
@@ -24,22 +25,22 @@ const dummyMessages = [
     username: "Guy Hawkins — Cartloop",
     messages: [
       "Why Netflix shares are down 10%",
-      "Ted Sarandos named co-CEO at Netflix",
+      // "Ted Sarandos named co-CEO at Netflix",
     ],
   },
-  {
-    type: "in",
-    username: "Wade Warren",
-    messages: [
-      "The Calm meditation app is getting its own celebrity-filled HBO Max show",
-      "Apple opens another megastore in China amid William Barr criticism",
-    ],
-  },
+  // {
+  //   type: "in",
+  //   username: "Wade Warren",
+  //   messages: [
+  //     "The Calm meditation app is getting its own celebrity-filled HBO Max show",
+  //     "Apple opens another megastore in China amid William Barr criticism",
+  //   ],
+  // },
 ];
 
 function App() {
   const [message, setMessage] = useState(
-    "Hello Elsa 👋. My name is Jason. What can I do for you today?"
+    "Hello Elsa My name is Jason. What can I do for you today"
   );
   const [messages, setMessages] = useState(dummyMessages);
 
@@ -47,24 +48,32 @@ function App() {
     setMessage(macro);
   };
 
-  const sendMessage = () => {
-    setMessages([
-      ...messages,
-      {
-        type: "out",
-        username: "Jason — Cartloop",
-        messages: [message],
-      },
-    ]);
+  const sendMessage = async () => {
+    // setMessages([
+    //   ...messages,
+    //   {
+    //     type: "out",
+    //     username: "Jason — Cartloop",
+    //     messages: [message],
+    //   },
+    // ]);
+    if (message) {
+      console.log("Sending message:", message);
+      await sendMessageToApi(message);
+    }
     setMessage("");
   };
+
+  // console.log(process.env.REACT_APP_API_ENDPOINT);
 
   return (
     <div className="min-h-screen p-4 bg-white flex">
       <main className="w-full xl:w-3/4 h-screen">
         <div className="mb-8 bg-cl-gray rounded-xl overflow-y-scroll h-70vh">
           <div className="flex items-center justify-between px-6 py-4">
-            <div className="font-semibold text-cl-dark-gray text-sm">In progress</div>
+            <div className="font-semibold text-cl-dark-gray text-sm">
+              In progress
+            </div>
             <div className="flex items-center">
               <MenuSVG className="w-5 h-5" />
             </div>

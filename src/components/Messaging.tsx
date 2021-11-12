@@ -26,7 +26,7 @@ export const OutBoundMessageCard: React.FC<OutBoundMessageType> = ({
           <div
             key={index}
             className={`px-4 py-2 text-white rounded-b-lg rounded-t-xl bg-primary ${
-              index === 0
+              index === 0 && messages.length !== 1
                 ? "rounded-b-lg rounded-t-xl mb-2"
                 : index === messages.length - 1
                 ? "rounded-t-lg rounded-b-xl mb-0"
